@@ -1,0 +1,48 @@
+body {        
+	background-image: url('https://media.tenor.com/images/a3e097ca8ecb5c70170cf1c0bdb93bcd/tenor.gif'); 
+	background-size: 100%;
+}   
+p {
+    margin: auto;
+	position: absolute;
+	top: 50px;
+	color: white;
+	font-size: 75px;
+	font-family: 'lucida';
+	font-weight: bold;
+	width: 100%;
+	text-align: center;
+}
+.rickroll {                                        
+	margin: auto;
+	position: absolute;
+    bottom: 40px;
+ 	color: white;
+ 	font-family: 'lucida';
+ 	font-size: 50px;
+	font-weight: bold;
+	width: 100%;    
+	text-align: center;
+}
+
+.murat {
+    height: 125px;
+	width: 650px;
+
+	position: absolute;
+	top: 34%;
+	bottom: 0;
+	left: 0;
+	right: 0;
+
+	margin: auto;
+}
+
+img {
+	width: 125px;
+	height: 125px;
+	padding-left: 30px;
+ 	margin-left: auto;
+ 	margin-right: auto;
+}
+
