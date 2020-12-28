@@ -13,6 +13,9 @@ p {
 	width: 100%;
 	text-align: center;
 }
+a {
+    text-decoration: none;
+}
 .rickroll {                                        
 	margin: auto;
 	position: absolute;
