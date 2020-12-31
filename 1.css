@@ -1,0 +1,42 @@
+body {   /*
+    background-image: url('https://media.tenor.com/images/a3e097ca8ecb5c70170cf1c0bdb93bcd/tenor.gif'); */
+    background-image: url('https://media.tenor.com/images/ba85a3e76469a507697f33a9d3fd4ad5/tenor.gif');
+    background-size: 100%;
+}
+p {
+	height: 100%;
+	width: 100%;
+	color: white;
+	font-weight: bold;
+}
+a {
+	color: #FF69B4;
+
+}
+.congrat {
+	background-color: rgba(0, 0, 0, 0.6);
+	text-align: center;
+	font-family: Minecraftia;
+	font-size: 50px;
+	width: 100%;
+	height: 60%;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	
+	margin: auto;
+}
+.rickroll {
+    margin: auto;
+    position: absolute;
+    bottom: 10px;
+    color: white;
+    font-family: 'lucida';
+    font-size: 50px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+}
+
