@@ -8,6 +8,7 @@ set shiftwidth=4
 set tabstop=4
 set bs=2
 set si
+set noswapfile
 
 map <C-a> ggVG
 map <C-c> "+y
