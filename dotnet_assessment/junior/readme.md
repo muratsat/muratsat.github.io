@@ -28,6 +28,12 @@
 
 2.6 [Dicitionary, HashSet](#2_6)
 
+2.7 [Params keyword](#2_7)
+
+2.8 [String Interning, StringBuilder](#2_8)
+
+2.9 [Working with files. Stream](#i2_9)
+
 <a name="1"/>
 
 ## Algorithms and data structures
@@ -203,3 +209,43 @@ IComparable is interface that obligates to implement comparing methods for sorti
 
 #### IEquatable
 Defines a generalized method that a value type or class implements to create a type-specific method for determining equality of instances.
+
+<a name="2_7"/>
+
+### Params keyword
+params is keyword used in function parameters to define that function can accept more that one parameter of type T
+```cs
+void Function(params T[] list){}
+```
+
+<a name="2_8"/>
+
+### StringBuilder
+`string` type objects cannot be interned in c#
+```cs
+string a = "2";
+a += "2"; // will cause error
+```
+
+This is where StringBuilder comes up. With StringBuilder we can append, replace, insert into strin;
+
+```cs
+StringBuilder sb = new StringBuilder("ABC", 50);
+
+// Append three characters (D, E, and F) to the end of the StringBuilder.
+sb.Append(new char[] { 'D', 'E', 'F' });
+
+// Append a format string to the end of the StringBuilder.
+sb.AppendFormat("GHI{0}{1}", 'J', 'k');
+
+
+// Insert a string at the beginning of the StringBuilder.
+sb.Insert(0, "Alphabet: ");
+
+// Replace all lowercase k's with uppercase K's.
+sb.Replace('k', 'K');
+```
+
+<a name="2_9"/>
+
+### Working with files. Stream
