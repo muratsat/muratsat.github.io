@@ -22,8 +22,11 @@
 
 2.3 [C# Assembly](#2_3)
 
+2.4 [Application domains](#2_4)
 
+2.5 [IEnumerable, foreach, yield](#2_5)
 
+2.6 [Dicitionary, HashSet](#2_6)
 
 <a name="1"/>
 
@@ -78,5 +81,125 @@ Intermediate language is executed by common language runtime, which is specific 
 <a name="2_3"/>
 
 ### C# Assembly, what is contains
+Assembly is .dll or .exe files which is the result of building the application. 
+
+Assemblies have following components: 
+* Assembly manifest
+    
+    This is the key component of the assembly. The MSIL code cannot be executed without the manifest.
+
+    Manifest contains following data:
+    * Name of assembly
+    * Version number
+    * Language and location parameters
+    * List of all files of the assembly 
+    * List of references to other assembiles
+    * List of references to types used by the assembly
+
+* Metadata
+
+    contains information about data
+
+* MSIL Code
+
+    Intermediate language code compiled during the bulid of project
+
+* Resources
+
+    Additional files used by assembly
+
+<a name="2_4"/>
 
 
+### Application domains
+
+Application domain is an isolation boundary created around .NET applications so that applications dont conflict with each other
+
+Each application domain has its own virtual memory and cannot access memory of other application domains
+
+<a name="2_5"/>
+
+### IEnumerable, foreach, yield
+
+IEnumerable implementaion makes possible to create custom collection that can be iterated with `foreach` construction
+```cs
+public interface IEnumerable
+{
+    IEnumerator GetEnumerator();
+}
+```
+
+IEnumerable is an interface that provides methods to iterate through collection
+
+```cs
+public interface IEnumerator
+{
+    bool MoveNext();
+    object Current {get;}
+    void Reset();
+}
+```
+**MoveNext()** moves the pointer to the next element, and returns 
+*True* if there is any next element, or return *False* if current element is the last in the collection
+
+**Current**  return current referenced object in collection
+
+**Reset** methods moves pointer to the begining of the collection
+
+<a name="2_6"/>
+
+### Dictionary, HashSet - GetHashCode, IComparable, IEquitable
+#### Dictionary
+Dictionary is collection that makes possible to access collection values bu their keys
+
+`Dictionary<TKey, TValue>`
+
+To add new values you need to use Add() method
+```cs
+Dictionary<int, string> dict = new Dictionary<int, string>();
+dict.Add(1, "string one");
+dict.Add(2, "string two");
+dict.Add(3, "string three");
+dict.Add(4, "string four");
+dict.Add(5, "string five");
+```
+
+We can iterate through key-value pair, keys or values using `foreach` construction
+
+```cs
+
+//Iterating through key-value pairs in dict
+foreach(KeyValuePair<int, string> keyValue in dict)
+{
+    Console.WriteLine(keyValue.Key + " - " + keyValue.Value);
+}
+
+//Iterating through keys
+foreach(int key in dict.Keys)
+{
+    Console.WriteLine(key);
+}
+
+//Iterating through values
+foreach(string value in dict.Values)
+{
+    Console.WriteLine(value);
+}
+```
+
+
+We also can get, change and delete value by key
+```cs
+string str = dict[1];
+dict[4] = "string 4";
+dict.remove(3);
+```
+
+#### Hashset
+HashSet is another way to store values, but unlike Dictionaries, they don't have a key. HashSet have only unique elements because it is a set. 
+
+#### IComparable
+IComparable is interface that obligates to implement comparing methods for sorting the collection
+
+#### IEquatable
+Defines a generalized method that a value type or class implements to create a type-specific method for determining equality of instances.
