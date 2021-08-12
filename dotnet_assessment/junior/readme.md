@@ -32,8 +32,17 @@
 
 2.8 [String Interning, StringBuilder](#2_8)
 
-2.9 [Working with files. Stream](#i2_9)
+2.9 [Working with files. Stream](#2_9)
 
+2.10 [IDisposable. Finalizer. Using construction](#2_10)
+
+2.11 [Try/Catch/Finally](#2_11)
+
+2.12 [Const and Readonly](#2_12)
+
+2.13 [Static classes, methods and properties. Extension methods](#2_13)
+
+2.14 [Generic. where, new() keyword](#2_14)
 <a name="1"/>
 
 ## Algorithms and data structures
@@ -249,3 +258,88 @@ sb.Replace('k', 'K');
 <a name="2_9"/>
 
 ### Working with files. Stream
+
+FileStream provides stresm for a file, allowing sychronous and asynchronous operations
+With FileStream we can read or write to files
+
+```cs
+string path = "$HOME/Desktop/file.txt"; // file path
+using(FileStream fs = File.Create(path)){
+    AddText(fs, "random text"); // Adding text to file
+}
+```
+To work with files we cant use `Read` `Write` `CopyTo` `Flush` synchronous operaions or or the `ReadAsync`, `WriteAsync`, `CopyToAsync`, and `FlushAsync` methods to perform asynchronous operations.
+
+<a name="2_10"/>
+
+### IDisposable. Finalizer. Using consrusion
+
+#### IDIsposable
+IDisposable provides mechanism for release unmanaged resources
+When working with objects that inherit from IDisposable, you need to dispose is with IDisposable.Dispose, when you finished using this object. 
+
+Another way to use disposable object is `using` construction and you won't need call dispose because `using` does it itself. Second way is wrap IDisposable.Disposable to try/finally block
+
+#### Finalizer
+Finaliser is class destructor. It used to perform necessary filnal clean-up when class instance is being collected by garbage collector
+
+#### Using statement
+Using statement provides convenient way to use Disposable without manually writing IDisposable.Dispose statement
+
+<a name="2_11"/>
+
+### Try/Catch/Finally
+`try/catch/finally` constrution is used to obtain resources in `try` block, handle exceptions in `catch` block, and release resources in `finally` block
+
+```cs
+try{
+    //open file
+}
+catch{
+    //handle ocurred exception, if there any
+}
+finally{
+    //close file
+}
+```
+
+<a name="2_12"/>
+
+### Const and Readonly
+`const` and `readonly` keywords make it not possible to change values of variable
+
+`const` value must be defined during variable assignment
+
+`readonly` value can be change in class constructor
+
+<a name="2_13"/>
+
+### Static classes, methods and properties. Extension methods
+
+#### Static
+Static keyword means that class, method or property with this modifier can be accessed without instantiating an object of the class.
+
+#### Extension methods
+Extension method allows to add new methods to existing type without modifying existring type or create new one.
+
+```cs
+//Extension method for type string 
+public static int WordCount(this String str)
+{
+    return str.Split(new char[] { ' ', '.', '?' },
+        StringSplitOptions.RemoveEmptyEntries).Length;
+}
+```
+
+<a name="2_14"/>
+
+### Generic. where, new() keyword
+
+#### Generic
+Generic is used with type parameters, which makes it possible to design classes and methods that defer from each other depending on type of parameter
+
+#### Where keyword
+i have no idea what this is 
+
+#### new() keyword
+new operator is used to create new instance of class, invoking one of its constructors
