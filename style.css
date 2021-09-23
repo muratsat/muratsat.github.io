@@ -8,27 +8,18 @@ p {
 	top: 50px;
 	color: white;
 	font-size: 75px;
-	font-family: 'lucida';
+	font-family: 'consolas';
 	font-weight: bold;
 	width: 100%;
 	text-align: center;
 }
 a {
+	color: white;
     text-decoration: none;
 }
-.rickroll {                                        
-	margin: auto;
-	position: absolute;
-    bottom: 40px;
- 	color: white;
- 	font-family: 'lucida';
- 	font-size: 50px;
-	font-weight: bold;
-	width: 100%;    
-	text-align: center;
-}
 
-.murat {
+
+.links {
     height: 125px;
 	width: 650px;
 
