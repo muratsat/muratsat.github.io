@@ -1,42 +1,4 @@
 body {        
-	background-image: url('https://media0.giphy.com/media/RNKevsZ30XqNV7V0NQ/giphy.gif?cid=82a1493beag1zeb5o1o6kak7fnmq8sop5bguqp73ipgl2ntv&rid=giphy.gif'); 
+	background-image: url('https://c.tenor.com/4gPD1ccxrVgAAAAC/rick-ashley-dance.gif'); 
 	background-size: 100%;
 }   
-p {
-    margin: auto;
-	position: absolute;
-	top: 50px;
-	color: white;
-	font-size: 75px;
-	font-family: 'consolas';
-	font-weight: bold;
-	width: 100%;
-	text-align: center;
-}
-a {
-	color: white;
-    text-decoration: none;
-}
-
-
-.links {
-    height: 125px;
-	width: 650px;
-
-	position: absolute;
-	top: 34%;
-	bottom: 0;
-	left: 0;
-	right: 0;
-
-	margin: auto;
-}
-
-img {
-	width: 125px;
-	height: 125px;
-	padding-left: 30px;
- 	margin-left: auto;
- 	margin-right: auto;
-}
-
