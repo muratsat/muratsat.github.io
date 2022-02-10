@@ -2,8 +2,8 @@ from random import randint
 from os import system
 from time import time
 
-lower = 16**99999
-upper = 16**100000 - 1
+lower = 16**999999
+upper = 16**1000000 - 1
 
 wrong_answers = 0
 
@@ -42,7 +42,7 @@ def runtest():
     return t
 
 def runTests():
-    numberOfTests = 100
+    numberOfTests = 1000
     total =  0
 
     for i in range(0, numberOfTests):
