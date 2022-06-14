@@ -46,7 +46,7 @@
 }
 ```
 
-<pre>
+```vim
 syntax on
 set mouse=a
 set number
@@ -86,4 +86,4 @@ autocmd filetype c nnoremap <F11> :w <bar> !clear && gcc % -o a.out; time ./a.ou
 
 autocmd filetype python nnoremap <F9> :w <bar> !clear && time python3 % <Enter>
 
-<pre/>
+```
