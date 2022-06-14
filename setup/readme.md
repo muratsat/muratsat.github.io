@@ -68,10 +68,10 @@ map <Space> i_<Esc>r
 map <C-e> :Explore <cr>
 
 
-inoremap { {}<Left>
-inoremap {<CR> {<CR>}<Esc>O
-inoremap {{ {
-inoremap {} {}
+{% raw %} inoremap { {}<Left> {% endraw %}
+{% raw %} inoremap {<CR> {<CR>}<Esc>O {% endraw %}
+{% raw %} inoremap {{ { {% endraw %}
+{% raw %} inoremap {} {} {% endraw %}
 
 autocmd filetype * nnoremap <F9> :w <bar> !clear; make <Enter>
 
