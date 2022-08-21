@@ -46,6 +46,8 @@
 }
 ```
 
+# Vim configuration
+
 ```vim
 syntax on
 set mouse=a
@@ -86,4 +88,24 @@ autocmd filetype c nnoremap <F11> :w <bar> !clear && gcc % -o a.out; time ./a.ou
 
 autocmd filetype python nnoremap <F9> :w <bar> !clear && time python3 % <Enter>
 
+```
+
+# Chrome flags
+```
+--disable-gpu-driver-bug-workarounds 
+--enable-native-gpu-memory-buffers 
+--enable-gpu-rasterization 
+--enable-oop-rasterization 
+--disable-gpu-vsync 
+--enable-zero-copy 
+--use-gl=desktop 
+--enable-accelerated-video-decode 
+--enable-accelerated-video-encode 
+--ignore-gpu-blocklist 
+--enable-gpu-compositing 
+--enable-smooth-scrolling 
+--disable-gpu-driver-workarounds 
+--disable-font-subpixel-positioning 
+--enable-features=VaapiVideoDecoder 
+--disable-features=UseChromeOSDirectVideoDecoder 
 ```
