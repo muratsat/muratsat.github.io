@@ -95,20 +95,5 @@ autocmd filetype python nnoremap <F9> :w <bar> !clear && time python3 % <Enter>
 
 # Chrome flags
 ```
---disable-gpu-driver-bug-workarounds 
---enable-native-gpu-memory-buffers 
---enable-gpu-rasterization 
---enable-oop-rasterization 
---disable-gpu-vsync 
---enable-zero-copy 
---use-gl=desktop 
---enable-accelerated-video-decode 
---enable-accelerated-video-encode 
---ignore-gpu-blocklist 
---enable-gpu-compositing 
---enable-smooth-scrolling 
---disable-gpu-driver-workarounds 
---disable-font-subpixel-positioning 
---enable-features=VaapiVideoDecoder 
---disable-features=UseChromeOSDirectVideoDecoder 
+--force-dark-mode --disable-gpu-driver-bug-workarounds --use-gl=desktop --ignore-gpu-blocklist --enable-gpu-rasterization --enable-zero-copy --enable-features=VaapiVideoDecoder,WebUIDarkMode --disable-features=UseChromeOSDirectVideoDecoder
 ```
