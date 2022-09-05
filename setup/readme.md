@@ -6,7 +6,10 @@
 
     "vim.vimrc.enable": true,
     "vim.vimrc.path": "/home/murat/.vsvimrc",
-
+    "vim.handleKeys": {
+        "<C-w>": false
+    },
+    
     "editor.fontWeight": "bold",
     "editor.fontSize": 14,
     "editor.mouseWheelZoom": true,
