@@ -66,18 +66,25 @@ set noswapfile
 set clipboard=unnamedplus
 set autoread
 
+" copy/paste shortcuts
 map <C-a> ggVG
 map <C-c> "+y
 map <C-v> "+p
 map <Space> i_<Esc>r
 map <C-e> :Explore <cr>
 
+" keep visual mode after indentation 
+vnoremap > >gv
+vnoremap < <gv
 
-{% raw %}inoremap { {}<Left> {% endraw %}
-{% raw %}inoremap {<CR> {<CR>}<Esc>O {% endraw %}
-{% raw %}inoremap {{ { {% endraw %}
-{% raw %}inoremap {} {} {% endraw %}
+" auto complete braces
+inoremap { {}<Left> 
+inoremap {<CR> {<CR>}<Esc>O 
+inoremap {{ { 
+inoremap {} {} 
 
+
+" compile and run shortcuts
 autocmd filetype * nnoremap <F9> :w <bar> !clear; make <Enter>
 
 autocmd filetype cpp nnoremap <F9> :w <bar> !clear; g++ % -o a.out <Enter>
@@ -90,7 +97,6 @@ autocmd filetype c nnoremap <F10> :!clear; time ./a.out <Enter>
 autocmd filetype c nnoremap <F11> :w <bar> !clear && gcc % -o a.out; time ./a.out<Enter>
 
 autocmd filetype python nnoremap <F9> :w <bar> !clear && time python3 % <Enter>
-
 ```
 
 # Chrome flags
