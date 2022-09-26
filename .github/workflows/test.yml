@@ -1,0 +1,11 @@
+on:
+  pull_request:
+    branches:
+      - test-ci
+    
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: make test
