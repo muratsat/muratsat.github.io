@@ -45,7 +45,7 @@
     "terminal.integrated.enableMultiLinePasteWarning": false,
     "liveServer.settings.donotShowInfoMsg": true,
     "terminal.integrated.inheritEnv": false,
-    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4 }"
+    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, DerivePointerAlignment: false, PointerAlignment: Left, AlignOperands: true, IndentWidth: 2, TabWidth: 2}"
 }
 ```
 
@@ -97,6 +97,9 @@ autocmd filetype c nnoremap <F10> :!clear; time ./a.out <Enter>
 autocmd filetype c nnoremap <F11> :w <bar> !clear && gcc % -o a.out; time ./a.out<Enter>
 
 autocmd filetype python nnoremap <F9> :w <bar> !clear && time python3 % <Enter>
+
+highlight ExtraWhitespace ctermbg=grey guibg=grey
+match ExtraWhitespace /\s\+$/
 ```
 
 # Chrome flags
