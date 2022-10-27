@@ -14,11 +14,11 @@ ssh-keygen
 ![image](https://user-images.githubusercontent.com/51270744/198275278-e84408c9-3663-4858-811b-54ffb403bbc2.png)
 
 
-3. Go to `SSH Keys` menu on the side bar
+4. Go to `SSH Keys` menu on the side bar
 
 ![image](https://user-images.githubusercontent.com/51270744/198275558-3b3a4d98-7648-4dd8-b634-d2cb63f10cad.png)
 
-4. Paste your public key and click **add**
+5. Paste your public key and click **add**
 
 ![image](https://user-images.githubusercontent.com/51270744/198275741-558c3f4e-fd7f-4fe3-bfe4-ede6fccdeeea.png)
 
