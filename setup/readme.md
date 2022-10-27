@@ -78,11 +78,10 @@ vnoremap > >gv
 vnoremap < <gv
 
 " auto complete braces
-inoremap { {}<Left> 
-inoremap {<CR> {<CR>}<Esc>O 
-inoremap {{ { 
-inoremap {} {} 
-
+{% raw %}inoremap { {}<Left> {% endraw %}
+{% raw %}inoremap {<CR> {<CR>}<Esc>O {% endraw %}
+{% raw %}inoremap {{ { {% endraw %}
+{% raw %}inoremap {} {} {% endraw %}
 
 " compile and run shortcuts
 autocmd filetype * nnoremap <F9> :w <bar> !clear; make <Enter>
