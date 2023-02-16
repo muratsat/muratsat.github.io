@@ -1,51 +1,63 @@
 # VScode settings json file
 ```json
 {
-    "workbench.colorTheme": "GitHub Dark Default",
-    "workbench.list.smoothScrolling": true,
+  // workbench
+  "workbench.colorTheme": "One Dark Pro Darker",
+  "workbench.list.smoothScrolling": true,
 
-    "vim.vimrc.enable": true,
-    "vim.vimrc.path": "/home/murat/.vsvimrc",
-    "vim.handleKeys": {
-        "<C-w>": false
-    },
-    
-    "editor.fontWeight": "bold",
-    "editor.fontSize": 14,
-    "editor.mouseWheelZoom": true,
-    "editor.cursorBlinking": "smooth",
-    "editor.cursorSmoothCaretAnimation": true,
-    "editor.smoothScrolling": true,
+  // vim
+  "vim.vimrc.enable": true,
+  "vim.vimrc.path": "/home/murat/.vsvimrc",
+  "vim.handleKeys": {
+    "<C-w>": false,
+    "<C-o>": false,
+    "<C-n>": false
+  },
 
-    "code-runner.runInTerminal": true,
-    "code-runner.executorMap": {
-        "c": "clear; cd $dir && gcc $fileName -o $fileNameWithoutExt.exe && time ./$fileNameWithoutExt.exe ", 
-        "cpp": "clear; cd $dir && g++ -O2 $fileName -o $fileNameWithoutExt.exe && time ./$fileNameWithoutExt.exe; rm ./$fileNameWithoutExt.exe", 
-        // "cpp": "clear; cd $dir && cc -O2 $fileName; time ./a.out",
-        "python": "cd $dir; clear; time python3 $fileName; echo ''",
-        // "c": "clear; cd $dir && gcc $fileName -o $fileNameWithoutExt.exe && time valgrind --leak-check=full ./$fileNameWithoutExt.exe", 
-        // "cpp": "clear; cd $dir && g++ $fileName -o $fileNameWithoutExt.exe && time valgrind --leak-check=full ./$fileNameWithoutExt.exe", 
-        "assembly": "cd $dir; make"
-    },
+  // editor
+  "editor.fontWeight": "bold",
+  "editor.fontSize": 14,
+  "editor.mouseWheelZoom": false,
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.cursorBlinking": "phase",
+  "editor.smoothScrolling": true,
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "editor.inlineSuggest.enabled": true,
+  "editor.tabSize": 2,
+  "editor.renderWhitespace": "trailing",
+  "editor.detectIndentation": false,
+  "editor.lineNumbers": "relative",
 
-    "git.confirmSync": false,
+  // code runner
+  "code-runner.runInTerminal": true,
+  "code-runner.executorMap": {
+    "c": "clear; cd $dir && gcc $fileName -o $fileNameWithoutExt.exe && time ./$fileNameWithoutExt.exe ",
+    "cpp": "clear; cd $dir && g++ -O2 -std=c++20 $fileName -o $fileNameWithoutExt.exe && time ./$fileNameWithoutExt.exe; rm ./$fileNameWithoutExt.exe",
+    "python": "cd $dir; clear; time python3 $fileName; echo ''",
+    "JavaScript": "cd $dir; clear; time node $fileName; echo ''",
+    "assembly": "cd $dir; make"
+  },
 
-    "terminal.integrated.cursorBlinking": true,
-    "terminal.integrated.fontWeight": "bold",
-    "terminal.integrated.fontSize": 15,
-    "editor.unicodeHighlight.allowedCharacters": {
-        "Н": true
-    },
-    "editor.unicodeHighlight.ambiguousCharacters": false,
-    "hexeditor.columnWidth": 32,
-    "hexeditor.showDecodedText": true,
-    "hexeditor.defaultEndianness": "little",
-    "hexeditor.inspectorType": "aside",
-    "workbench.editor.enablePreview": false,
-    "terminal.integrated.enableMultiLinePasteWarning": false,
-    "liveServer.settings.donotShowInfoMsg": true,
-    "terminal.integrated.inheritEnv": false,
-    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, DerivePointerAlignment: false, PointerAlignment: Left, AlignOperands: true, IndentWidth: 2, TabWidth: 2}"
+  // terminal
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.fontWeight": "bold",
+  "terminal.integrated.fontSize": 15,
+  "terminal.integrated.enableMultiLinePasteWarning": false,
+  "terminal.integrated.inheritEnv": false,
+
+  "liveServer.settings.donotShowInfoMsg": true,
+
+  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, DerivePointerAlignment: false, PointerAlignment: Left, AlignOperands: true, IndentWidth: 2, TabWidth: 2, AllowShortFunctionsOnASingleLine: None}",
+
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[python]": {
+    "editor.tabSize": 4,
+  },
 }
 ```
 
