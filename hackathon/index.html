@@ -209,11 +209,16 @@ function fillColors(colors) {
 
     button && button.addEventListener("click", (e) => {
       e.preventDefault();
-      document.querySelector('.message')?.remove();
-      document.getElementById("palette").innerHTML = "<h1>Loading...</h1>";
       const token = document.getElementById("token").value;
       const targetColor = document.getElementById("targetColor").value;
-      console.log(token, targetColor);
+      if (!token || !targetColor) {
+        alert('Please fill in token and targetColor');
+        return;
+      }
+
+      document.querySelector('.message')?.remove();
+      document.getElementById("palette").innerHTML = "<h1>Loading...</h1>";
+
       fetch("http://api.datsart.dats.team/art/colors/list", {
         method: "POST",
         headers: {
@@ -223,6 +228,7 @@ function fillColors(colors) {
       })
         .then((response) => response.json())
         .then((data) => {
+
           if (!data.success) {
             alert('Invalid token');
             return;
@@ -237,10 +243,10 @@ function fillColors(colors) {
           });
 
           fillColors(sortedColors);
-          console.log(sortedColors);
         })
         .catch((err) => {
-          console.log(err);
+          alert('Invalid token');
+          fillColors([]); 
         });
     });
 
