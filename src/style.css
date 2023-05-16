@@ -85,6 +85,16 @@
   filter: color(white);
 }
 
+.hero-background {
+  margin: 0;;
+  max-width: 100%;
+  max-height: 100%;
+  /* object-fit: cover; */
+  position: absolute;
+  z-index: 0;
+  filter:blur(70px);
+}
+
 .hero-section-main {
   display: flex;
   flex-wrap: wrap;
