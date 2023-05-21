@@ -11,7 +11,7 @@
 .show {
   opacity: 1;
   filter: blur(0);
-  transform: translate(0, 0);
+  transform: none;
   transition: all 0.5s;
 }
 
@@ -20,3 +20,23 @@
 .observed:nth-child(4) { transition-delay: 300ms; }
 .observed:nth-child(5) { transition-delay: 400ms; }
 
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(1, 1, 1, 0.1)
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #aaaaaa;
+}
