@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Location Permission</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0c0c0f;
+    --surface: #141418;
+    --surface2: #1c1c22;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #f0eff4;
+    --muted: #7a798a;
+    --accent: #6c63ff;
+    --accent-glow: rgba(108,99,255,0.25);
+    --green: #34d399;
+    --red: #f87171;
+    --amber: #fbbf24;
+    --ios-blue: #0a84ff;
+    --android-blue: #4285f4;
+  }
+
+  html, body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(108,99,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(108,99,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .logo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(108,99,255,0.3), transparent 70%);
+  }
+
+  .logo svg { position: relative; z-index: 1; }
+
+  .header h1 {
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .header p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Main card */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  /* Platform detection strip */
+  .platform-strip {
+    padding: 12px 20px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .platform-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+    flex-shrink: 0;
+    transition: background 0.3s;
+  }
+
+  .platform-dot.detected { background: var(--green); }
+
+  .platform-name {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* Status display */
+  .status-area {
+    padding: 28px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .status-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+  }
+
+  .status-badge.unknown {
+    background: rgba(122,121,138,0.15);
+    border-color: rgba(122,121,138,0.2);
+    color: var(--muted);
+  }
+
+  .status-badge.prompt {
+    background: rgba(251,191,36,0.1);
+    border-color: rgba(251,191,36,0.2);
+    color: var(--amber);
+  }
+
+  .status-badge.granted {
+    background: rgba(52,211,153,0.1);
+    border-color: rgba(52,211,153,0.2);
+    color: var(--green);
+  }
+
+  .status-badge.denied {
+    background: rgba(248,113,113,0.1);
+    border-color: rgba(248,113,113,0.2);
+    color: var(--red);
+  }
+
+  .status-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  /* Location result */
+  .location-result {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    display: none;
+    animation: slideIn 0.3s ease;
+  }
+
+  .location-result.visible { display: block; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .location-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .location-row:last-child { margin-bottom: 0; }
+
+  .location-key {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .location-val {
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .location-val.accent { color: var(--accent); }
+
+  /* Error box */
+  .error-box {
+    background: rgba(248,113,113,0.08);
+    border: 1px solid rgba(248,113,113,0.2);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--red);
+    display: none;
+    line-height: 1.5;
+    animation: slideIn 0.3s ease;
+  }
+
+  .error-box.visible { display: block; }
+
+  /* Platform-specific instruction */
+  .platform-instruction {
+    background: rgba(108,99,255,0.06);
+    border: 1px solid rgba(108,99,255,0.15);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: none;
+    animation: slideIn 0.3s ease;
+    margin-top: 12px;
+  }
+
+  .platform-instruction.visible { display: block; }
+
+  .instruction-title {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .instruction-steps {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .instruction-steps li {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .instruction-steps li::before {
+    content: attr(data-n);
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    top: 1px;
+  }
+
+  /* Actions */
+  .actions {
+    padding: 20px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 13px 20px;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    letter-spacing: 0.01em;
+  }
+
+  .btn:active { transform: scale(0.98); }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 0 0 var(--accent-glow);
+  }
+
+  .btn-primary:hover {
+    background: #7c74ff;
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .btn-primary:disabled:hover {
+    box-shadow: none;
+    background: var(--accent);
+  }
+
+  .btn-secondary {
+    background: var(--surface2);
+    color: var(--muted);
+    border-color: var(--border);
+  }
+
+  .btn-secondary:hover {
+    color: var(--text);
+    border-color: var(--border2);
+  }
+
+  /* Loading spinner */
+  .spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Debug section */
+  .debug-section {
+    border-top: 1px solid var(--border);
+    padding: 16px 24px;
+  }
+
+  .debug-toggle {
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    background: none;
+    border: none;
+    color: var(--muted);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+  }
+
+  .debug-toggle:hover { color: var(--text); }
+
+  .debug-log {
+    margin-top: 12px;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 140px;
+    overflow-y: auto;
+  }
+
+  .debug-log.open { display: flex; }
+
+  .debug-entry {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+    display: flex;
+    gap: 8px;
+  }
+
+  .debug-entry .ts { color: rgba(108,99,255,0.6); flex-shrink: 0; }
+  .debug-entry.ok .msg { color: var(--green); }
+  .debug-entry.warn .msg { color: var(--amber); }
+  .debug-entry.err .msg { color: var(--red); }
+
+  /* Accuracy meter */
+  .accuracy-bar-wrap {
+    margin-top: 10px;
+  }
+
+  .accuracy-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 6px;
+  }
+
+  .accuracy-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .accuracy-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--green);
+    transition: width 0.6s ease;
+    width: 0%;
+  }
+
+  /* iOS / Android colour tints on buttons */
+  body.ios .btn-primary { background: var(--ios-blue); }
+  body.ios .btn-primary:hover { background: #3a9bff; box-shadow: 0 0 20px rgba(10,132,255,0.3); }
+  body.android .btn-primary { background: var(--android-blue); }
+  body.android .btn-primary:hover { background: #5a95f5; box-shadow: 0 0 20px rgba(66,133,244,0.3); }
+
+  /* Responsive */
+  @media (max-width: 400px) {
+    body { padding: 20px 12px; align-items: flex-start; padding-top: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="logo">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="10" r="4" stroke="#6c63ff" stroke-width="1.5"/>
+        <path d="M12 2C7.03 2 3 6.03 3 11c0 5.25 7.5 13 9 13s9-7.75 9-13c0-4.97-4.03-9-9-9z" stroke="#6c63ff" stroke-width="1.5" fill="none"/>
+      </svg>
+    </div>
+    <h1>Location access</h1>
+    <p>This page requests your geolocation.<br>Works on iOS Safari, Android Chrome, and desktop.</p>
+  </div>
+
+  <div class="card">
+
+    <!-- Platform strip -->
+    <div class="platform-strip">
+      <div class="platform-dot" id="platformDot"></div>
+      <span>Detected: <span class="platform-name" id="platformName">detecting…</span></span>
+      <span style="margin-left:auto; font-size:11px;" id="httpsNote"></span>
+    </div>
+
+    <!-- Status area -->
+    <div class="status-area">
+      <div class="status-row">
+        <span class="status-label">Permission state</span>
+        <div class="status-badge unknown" id="statusBadge">
+          <div class="status-indicator"></div>
+          <span id="statusText">checking…</span>
+        </div>
+      </div>
+
+      <div class="location-result" id="locationResult">
+        <div class="location-row">
+          <span class="location-key">Latitude</span>
+          <span class="location-val accent" id="lat">—</span>
+        </div>
+        <div class="location-row">
+          <span class="location-key">Longitude</span>
+          <span class="location-val accent" id="lng">—</span>
+        </div>
+        <div class="location-row">
+          <span class="location-key">Accuracy</span>
+          <span class="location-val" id="acc">—</span>
+        </div>
+        <div class="accuracy-bar-wrap">
+          <div class="accuracy-label">
+            <span>Signal quality</span>
+            <span id="accQuality">—</span>
+          </div>
+          <div class="accuracy-bar"><div class="accuracy-fill" id="accFill"></div></div>
+        </div>
+      </div>
+
+      <div class="error-box" id="errorBox"></div>
+
+      <div class="platform-instruction" id="platformInstruction">
+        <div class="instruction-title">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M6 0a6 6 0 100 12A6 6 0 006 0zm.75 9H5.25V5.25h1.5V9zm0-5.25H5.25v-1.5h1.5v1.5z"/></svg>
+          <span id="instructionTitle">How to enable</span>
+        </div>
+        <ol class="instruction-steps" id="instructionSteps"></ol>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button class="btn btn-primary" id="requestBtn" onclick="requestLocation()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M7 0C4.24 0 2 2.24 2 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5A1.5 1.5 0 115.5 5 1.5 1.5 0 017 6.5z"/></svg>
+        <span id="requestBtnText">Request location</span>
+      </button>
+      <button class="btn btn-secondary" onclick="checkStatus()" id="checkBtn">
+        Recheck permission status
+      </button>
+    </div>
+
+    <!-- Debug log -->
+    <div class="debug-section">
+      <button class="debug-toggle" onclick="toggleDebug()">
+        <span id="debugArrow">▶</span> debug log
+      </button>
+      <div class="debug-log" id="debugLog"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── Platform detection ──────────────────────────────────────────────
+const ua = navigator.userAgent;
+const platform = (() => {
+  if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) return 'ios';
+  if (/android/i.test(ua)) return 'android';
+  if (/Mac/.test(navigator.platform) || /Macintosh/.test(ua)) return 'macos';
+  if (/Win/.test(navigator.platform)) return 'windows';
+  return 'desktop';
+})();
+
+const platformLabels = {
+  ios: 'iOS Safari',
+  android: 'Android Chrome',
+  macos: 'macOS',
+  windows: 'Windows',
+  desktop: 'Desktop browser'
+};
+
+const deniedInstructions = {
+  ios: {
+    title: 'Re-enable on iOS Safari',
+    steps: [
+      'Open the Settings app',
+      'Scroll to Safari → tap it',
+      'Tap "Location" under this website or under "Website Settings"',
+      'Select "Allow" or "Ask"'
+    ]
+  },
+  android: {
+    title: 'Re-enable on Android Chrome',
+    steps: [
+      'Tap the lock icon in Chrome\'s address bar',
+      'Tap "Site settings"',
+      'Tap "Location" and change to "Allow"',
+      'Reload this page'
+    ]
+  },
+  macos: {
+    title: 'Re-enable on macOS',
+    steps: [
+      'Open System Settings → Privacy & Security → Location Services',
+      'Find your browser and set to "While Using"',
+      'Return to this page and reload'
+    ]
+  },
+  windows: {
+    title: 'Re-enable on Windows',
+    steps: [
+      'Open Chrome/Edge settings → Site settings → Location',
+      'Remove this site from the "Blocked" list',
+      'Reload this page and allow when prompted'
+    ]
+  },
+  desktop: {
+    title: 'Re-enable in your browser',
+    steps: [
+      'Click the lock or info icon in the address bar',
+      'Find "Location" permission and set to "Allow"',
+      'Reload this page'
+    ]
+  }
+};
+
+// ── Init ────────────────────────────────────────────────────────────
+document.body.classList.add(platform);
+document.getElementById('platformName').textContent = platformLabels[platform] || 'Unknown';
+document.getElementById('platformDot').classList.add('detected');
+
+const isHttps = location.protocol === 'https:' || location.hostname === 'localhost';
+if (!isHttps) {
+  document.getElementById('httpsNote').textContent = '⚠ needs HTTPS';
+  document.getElementById('httpsNote').style.color = 'var(--amber)';
+}
+
+log('info', `Platform: ${platformLabels[platform]}`);
+log('info', `Protocol: ${location.protocol}`);
+log('info', `Geolocation API: ${navigator.geolocation ? 'available' : 'UNAVAILABLE'}`);
+log('info', `Permissions API: ${navigator.permissions ? 'available' : 'unavailable'}`);
+
+checkStatus();
+
+// ── Check permission state ─────────────────────────────────────────
+async function checkStatus() {
+  if (!navigator.geolocation) {
+    setStatus('denied', 'unavailable');
+    showError('Geolocation is not supported in this browser or context. HTTPS is required.');
+    log('err', 'navigator.geolocation is undefined');
+    return;
+  }
+
+  if (navigator.permissions) {
+    try {
+      const result = await navigator.permissions.query({ name: 'geolocation' });
+      applyPermissionState(result.state);
+      log('ok', `Permissions API → state: ${result.state}`);
+
+      // Watch for changes (e.g. user toggles in settings while page is open)
+      result.onchange = () => {
+        log('warn', `Permission changed → ${result.state}`);
+        applyPermissionState(result.state);
+        if (result.state === 'granted') requestLocation();
+      };
+    } catch (e) {
+      log('warn', `Permissions API query failed: ${e.message} — falling back`);
+      setStatus('unknown', 'unknown');
+    }
+  } else {
+    // Permissions API not available (iOS < 16, some WebViews)
+    log('warn', 'Permissions API not available — state unknown until request');
+    setStatus('prompt', 'tap to request');
+  }
+}
+
+function applyPermissionState(state) {
+  switch (state) {
+    case 'granted':
+      setStatus('granted', 'granted');
+      document.getElementById('requestBtn').disabled = false;
+      hideInstruction();
+      log('ok', 'Permission already granted — fetching location…');
+      requestLocation();
+      break;
+    case 'denied':
+      setStatus('denied', 'blocked');
+      document.getElementById('requestBtn').disabled = true;
+      showInstruction();
+      hideLocation();
+      log('err', 'Permission denied');
+      break;
+    case 'prompt':
+    default:
+      setStatus('prompt', 'not yet asked');
+      document.getElementById('requestBtn').disabled = false;
+      hideInstruction();
+      break;
+  }
+}
+
+// ── Request location ───────────────────────────────────────────────
+function requestLocation() {
+  if (!navigator.geolocation) return;
+
+  const btn = document.getElementById('requestBtn');
+  const btnText = document.getElementById('requestBtnText');
+  btnText.textContent = 'Requesting…';
+  btn.innerHTML = '<div class="spinner"></div><span>Requesting…</span>';
+  btn.disabled = true;
+
+  clearError();
+  log('info', 'Calling getCurrentPosition()…');
+
+  navigator.geolocation.getCurrentPosition(
+    onSuccess,
+    onError,
+    {
+      enableHighAccuracy: true,
+      timeout: 12000,
+      maximumAge: 30000
+    }
+  );
+}
+
+function onSuccess(pos) {
+  const { latitude, longitude, accuracy } = pos.coords;
+
+  setStatus('granted', 'granted');
+  hideInstruction();
+  clearError();
+
+  document.getElementById('lat').textContent = latitude.toFixed(6);
+  document.getElementById('lng').textContent = longitude.toFixed(6);
+  document.getElementById('acc').textContent = `±${Math.round(accuracy)} m`;
+  document.getElementById('locationResult').classList.add('visible');
+
+  // Accuracy quality bar: excellent <20m, good <100m, fair <500m, poor >500m
+  const quality = accuracy < 20 ? ['Excellent', 95] :
+                  accuracy < 100 ? ['Good', 70] :
+                  accuracy < 500 ? ['Fair', 40] : ['Poor', 15];
+  document.getElementById('accQuality').textContent = quality[0];
+  document.getElementById('accFill').style.width = quality[1] + '%';
+  document.getElementById('accFill').style.background =
+    quality[0] === 'Excellent' ? 'var(--green)' :
+    quality[0] === 'Good' ? '#34d399' :
+    quality[0] === 'Fair' ? 'var(--amber)' : 'var(--red)';
+
+  resetBtn('Get fresh position');
+  log('ok', `Position: ${latitude.toFixed(5)}, ${longitude.toFixed(5)} ±${Math.round(accuracy)}m`);
+}
+
+function onError(err) {
+  const messages = {
+    1: 'Permission denied by user.',
+    2: 'Position unavailable. Device may not have a GPS signal.',
+    3: 'Request timed out. Try moving outdoors or enabling high-accuracy mode.'
+  };
+
+  const msg = messages[err.code] || `Unknown error (code ${err.code})`;
+  showError(msg);
+  hideLocation();
+
+  if (err.code === 1) {
+    setStatus('denied', 'blocked');
+    showInstruction();
+  } else {
+    setStatus('unknown', 'error');
+  }
+
+  resetBtn('Retry');
+  log('err', `GeolocationPositionError code=${err.code}: ${err.message}`);
+}
+
+// ── UI helpers ─────────────────────────────────────────────────────
+function setStatus(type, label) {
+  const badge = document.getElementById('statusBadge');
+  badge.className = 'status-badge ' + type;
+  document.getElementById('statusText').textContent = label;
+}
+
+function showError(msg) {
+  const el = document.getElementById('errorBox');
+  el.textContent = msg;
+  el.classList.add('visible');
+}
+
+function clearError() {
+  document.getElementById('errorBox').classList.remove('visible');
+}
+
+function showInstruction() {
+  const inst = deniedInstructions[platform] || deniedInstructions.desktop;
+  document.getElementById('instructionTitle').textContent = inst.title;
+  const ol = document.getElementById('instructionSteps');
+  ol.innerHTML = inst.steps.map((s, i) =>
+    `<li data-n="${i+1}.">${s}</li>`
+  ).join('');
+  document.getElementById('platformInstruction').classList.add('visible');
+}
+
+function hideInstruction() {
+  document.getElementById('platformInstruction').classList.remove('visible');
+}
+
+function hideLocation() {
+  document.getElementById('locationResult').classList.remove('visible');
+}
+
+function resetBtn(label) {
+  const btn = document.getElementById('requestBtn');
+  const icon = `<svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M7 0C4.24 0 2 2.24 2 5c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5A1.5 1.5 0 115.5 5 1.5 1.5 0 017 6.5z"/></svg>`;
+  btn.innerHTML = icon + `<span id="requestBtnText">${label}</span>`;
+  btn.disabled = false;
+}
+
+// ── Debug log ──────────────────────────────────────────────────────
+function log(type, msg) {
+  const log = document.getElementById('debugLog');
+  const now = new Date();
+  const ts = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+  const entry = document.createElement('div');
+  entry.className = `debug-entry ${type === 'ok' ? 'ok' : type === 'err' ? 'err' : type === 'warn' ? 'warn' : ''}`;
+  entry.innerHTML = `<span class="ts">${ts}</span><span class="msg">${msg}</span>`;
+  log.appendChild(entry);
+  log.scrollTop = log.scrollHeight;
+}
+
+function toggleDebug() {
+  const log = document.getElementById('debugLog');
+  const arrow = document.getElementById('debugArrow');
+  log.classList.toggle('open');
+  arrow.textContent = log.classList.contains('open') ? '▼' : '▶';
+}
+</script>
+</body>
+</html>
